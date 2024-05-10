@@ -2,6 +2,8 @@ from ofjustpy.Div_TF import gen_Div_type
 from ofjustpy_engine.HCType import HCType
 from ofjustpy import ui_styles
 from ofjustpy_engine import HC_Div_type_mixins as TR
+from ofjustpy.htmlcomponents_impl import assign_id
+from ofjustpy.icons import FontAwesomeIcon
 
 class AccordionMixin:
     def __init__(self, **kwargs):
@@ -101,6 +103,12 @@ class TabGroupMixin:
         self.attrs['regionPanel'] = kwargs.get('regionPanel', "")
         self.attrs['labelledby'] = kwargs.get('labelledby', "")
         self.attrs['panel'] = kwargs.get('panel', "")
+        self.domDict.slot_panel_json = []
+        
+    def set_slot_panel(self, *args):
+        self.domDict.slot_panel_json = [_.convert_object_to_jsondict() for _ in args]
+        
+        pass
 
 TabGroup = gen_Div_type(
         HCType.passive,
@@ -126,6 +134,7 @@ Tab = gen_Div_type(
         stytags_getter_func=lambda m=ui_styles: m.sty.tab,
     static_addon_mixins = [TR.HCTextMixin]  
         )                               
+Tab = assign_id(Tab)
 
 class SlideToggleMixin:
     def __init__(self, **kwargs):
@@ -224,3 +233,159 @@ ListBoxItem = gen_Div_type(
         stytags_getter_func=lambda m=ui_styles: m.sty.listboxitem,
     static_addon_mixins = [TR.HCTextMixin]  
         )
+
+
+class RatingsMixin:
+    def __init__(self, **kwargs):
+        """
+        Initialize RatingsMixin with the provided attributes.
+
+        Args:
+        - value (number, optional): Current rating value. Default is 0.
+        - max (number, optional): Maximum rating value. Default is 5.
+        - interactive (boolean, optional): Enables interactive mode for each rating icon. Default is False.
+        - text (string, optional): Provide classes to set the text color. Default is 'text-token'.
+        - fill (string, optional): Provide classes to set the SVG fill color. Default is 'fill-token'.
+        - justify (string, optional): Provide classes to set the flexbox justification. Default is 'justify-center'.
+        - spacing (string, optional): Provide classes to set the horizontal spacing style. Default is 'space-x-2'.
+        - regionIcon (string, optional): Provide arbitrary classes to the icon region. Default is None.
+        """
+        self.domDict['vue_type'] = "skeleton_component"
+        self.domDict['html_tag'] = "ratings"
+        
+        for key in ['value', 'max', 'interactive', 'text', 'fill', 'justify',
+                    'spacing', 'regionIcon']:
+            if key in kwargs:
+                self.attrs[key] = kwargs.get(key)
+
+        self.domDict.slot_empty_json = [_.convert_object_to_jsondict() for _ in [FontAwesomeIcon(label="faStarHalfStroke", size="1x")
+
+                                                                                 ]
+                                        ]
+        
+        self.domDict.slot_half_json = [_.convert_object_to_jsondict() for _ in [FontAwesomeIcon(label="faStarHalfStroke", size="1x")
+
+                                                                                ]
+                                       
+                                       ]
+        self.domDict.slot_full_json = [_.convert_object_to_jsondict() for _ in [FontAwesomeIcon(label="faStar", size="1x")
+                                                                                ]
+                                       ]
+        
+    def set_slot_empty(self, *args):
+        self.domDict.slot_empty_json = [_.convert_object_to_jsondict() for _ in args]
+        
+        pass
+
+    def set_slot_half(self, *args):
+        self.domDict.slot_half_json = [_.convert_object_to_jsondict() for _ in args]
+            
+        pass
+
+    def set_slot_full(self, *args):
+        self.domDict.slot_full_json = [_.convert_object_to_jsondict() for _ in args]
+        
+        pass
+
+
+Ratings = gen_Div_type(HCType.active,
+                       "Ratings",
+                       RatingsMixin,
+                       stytags_getter_func=lambda m=ui_styles: m.sty.skeletonui_ratings
+                       )
+
+Ratings = assign_id(Ratings)
+
+# ============================== Stepper =============================
+class StepperMixin:
+    def __init__(self, *args, **kwargs):
+        """
+        Initialize StepperMixin with the provided attributes.
+
+        Args:
+        - jp_props_list (list): List of jp_props.object_props.
+        - valueSingle (str): Current value for the stepper.
+        - eventHandlers (dict): Dictionary containing event handlers, such as 'click'.
+        - gap (string, optional): Provide classes to style the stepper header gap. Default is 'gap-4'.
+        - stepTerm (string, optional): Provide the verbiage that represents "Step". Default is 'Step'.
+        - badge (string, optional): Provide classes to style the stepper header badges. Default is 'variant-filled-surface'.
+        - active (string, optional): Provide classes to style the stepper header active step badge. Default is 'variant-filled'.
+        - border (string, optional): Provide classes to style the stepper header border. Default is 'border-surface-400-500-token'.
+        - start (number, optional): Provide the initially selected step. Default is 0.
+        - justify (string, optional): Set the justification for the step navigation buttons. Default is 'justify-between'.
+        - buttonBack (string, optional): Provide arbitrary classes to style the back button. Default is 'variant-ghost'.
+        - buttonBackType (string, optional): Set the type of the back button. Default is 'button'.
+        - buttonBackLabel (string, optional): Provide the HTML label content for the back button. Default is '← Back'.
+        - buttonNext (string, optional): Provide arbitrary classes to style the next button. Default is 'variant-filled'.
+        - buttonNextType (string, optional): Set the type of the next button. Default is 'button'.
+        - buttonNextLabel (string, optional): Provide the HTML label content for the next button. Default is 'Next →'.
+        - buttonComplete (string, optional): Provide arbitrary classes to style the complete button. Default is 'variant-filled-primary'.
+        - buttonCompleteType (string, optional): Set the type of the complete button. Default is 'button'.
+        - buttonCompleteLabel (string, optional): Provide the HTML label content for the complete button. Default is 'Complete'.
+        - regionHeader (string, optional): Provide arbitrary classes to the stepper header region. Default is None.
+        - regionContent (string, optional): Provide arbitrary classes to the stepper content region. Default is None.
+        - transitions (boolean, optional): Enable/Disable transitions. Default is !$prefersReducedMotionStore.
+        - transitionIn (TransitionIn, optional): Provide the transition to used on entry. Default is None.
+        - transitionInParams (TransitionParams, optional): Transition params provided to `transitionIn`. Default is { duration: 100 }.
+        - transitionOut (TransitionOut, optional): Provide the transition to used on exit. Default is None.
+        - transitionOutParams (TransitionParams, optional): Transition params provided to `transitionOut`. Default is { duration: 100 }.
+        """
+        self.domDict['vue_type'] = "skeleton_component"
+        self.domDict['html_tag'] = "stepper"
+        
+        for key in [
+            'gap', 'stepTerm', 'badge', 'active', 'border', 'start', 'justify',
+            'buttonBack', 'buttonBackType', 'buttonBackLabel', 'buttonNext',
+            'buttonNextType', 'buttonNextLabel', 'buttonComplete', 'buttonCompleteType',
+            'buttonCompleteLabel', 'regionHeader', 'regionContent', 'transitions',
+            'transitionIn', 'transitionInParams', 'transitionOut', 'transitionOutParams'
+        ]:
+            if key in kwargs:
+                self.attrs[key] = kwargs.get(key)
+
+
+
+
+
+
+Stepper = gen_Div_type(HCType.passive,
+                       "Stepper",
+                       StepperMixin,
+                       stytags_getter_func=lambda m=ui_styles: m.sty.skeletonui_stepper
+                       )
+
+class StepMixin:
+    def __init__(self, *args, **kwargs):
+        """
+        Initialize StepMixin with the provided attributes.
+
+        Args:
+        - locked (boolean, optional): Flag to indicate if the step is locked. Default is False.
+        - regionHeader (string, optional): Provide arbitrary classes to the step header region. Default is None.
+        - regionContent (string, optional): Provide arbitrary classes to the step content region. Default is None.
+        - regionNavigation (string, optional): Provide arbitrary classes to the step navigation region. Default is None.
+        - transitionIn (TransitionIn, optional): Provide the transition to used on entry. Default is None.
+        - transitionInParams (TransitionParams, optional): Transition params provided to `transitionIn`. Default is None.
+        - transitionOut (TransitionOut, optional): Provide the transition to used on exit. Default is None.
+        - transitionOutParams (TransitionParams, optional): Transition params provided to `transitionOut`. Default is None.
+        """
+
+        self.domDict['vue_type'] = "skeleton_component"
+        self.domDict['html_tag'] = "step"
+        
+        for key in [
+            'locked', 'regionHeader', 'regionContent', 'regionNavigation',
+            'transitionIn', 'transitionInParams', 'transitionOut', 'transitionOutParams'
+        ]:
+            if key in kwargs:
+                self.attrs[key] = kwargs.get(key)
+    def set_slot_header(self, *args):
+        self.domDict.slot_header_json = [_.convert_object_to_jsondict() for _ in args]
+        
+        pass
+
+Step = gen_Div_type(HCType.passive,
+                       "Step",
+                       StepMixin,
+                       stytags_getter_func=lambda m=ui_styles: m.sty.skeletonui_step
+                       )

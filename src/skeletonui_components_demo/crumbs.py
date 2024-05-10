@@ -50,13 +50,15 @@ with writer_ctx:
                 pass
             
 icon_separator_frame = oj.PD.Subsubsection("With Icon separator",
-                                           breadcrumb_bar_box)
+                    breadcrumb_bar_box)
 
-endpoint = oj.create_endpoint(key="td_skeleton_ui",
-                              childs = [html_separator_frame,
-                                        icon_separator_frame
-                                        ],
-                              data_theme= 'data-theme="skeleton"',
-                              title = "skeleton ui"
-                              )
-oj.add_jproute("/", endpoint)
+crumbs_box = oj.HCCStatic.Div(key="Crumbsbox",
+                     childs = [html_separator_frame,
+                               icon_separator_frame
+                               
+                                 
+                                ],
+                               
+                               extra_classes="variant-ghost-tertiary w-full card p-4 space-y-4 flex flex-col items-center overflow-x-auto overflow-x-auto"                       
+                      
+                      )

@@ -43,8 +43,8 @@ accordion_box = oj.PD.Div(disabled=False, padding="py-2 px-4",
                           )
 
 tabgroup_box = oj.PD.Section(classes="w-full p-4", extra_classes="card text-token variant-filled-primary",
-              childs= [TabGroup(childs=[Tab(text="Books", tab_value=0),
-                                        Tab(text="Movies", tab_value=1),
+              childs= [TabGroup(childs=[Tab(key="Books", text="Books", tab_value=0),
+                                        Tab(key="Movies", text="Movies", tab_value=1),
                                         ],
                                 active="border-b-4 border-surface-50-900-token"
                                 )
@@ -55,8 +55,8 @@ tabgroup_box = oj.PD.Section(classes="w-full p-4", extra_classes="card text-toke
 app = oj.load_app()
 
 wp_endpoint = oj.create_endpoint(key="accordion",
-                                 childs = [                                           
-                                           tabgroup_box
+                                 childs = [                                           tabgroup_box
+                                  #         accordion_box
                                            ],
                                  
                                  title="Accordion"

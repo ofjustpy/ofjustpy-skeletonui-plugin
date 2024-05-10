@@ -2,7 +2,6 @@ from skeletonui_components import *
 from py_tailwind_utils import *
 import ofjustpy as oj
 app = oj.load_app()
-print(tstr(badge))
 
 # ============================== alerts ==============================
 oj.set_style("un")
