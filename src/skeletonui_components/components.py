@@ -6,17 +6,50 @@ from ofjustpy.htmlcomponents_impl import assign_id
 from ofjustpy.icons import FontAwesomeIcon
 
 class AccordionMixin:
-    def __init__(self, **kwargs):
-        self.domDict.vue_type= "skeleton_component"
-        self.domDict.html_tag = "accordion"
-        for key in ['autocollapse', 'width', 'spacing', 'disabled', 'padding', 'hover',
-                    'rounded', 'caretOpen', 'caretClosed', 'regionControl', 'regionPanel',
-                    'regionCaret', 'transitions', 'transitionIn', 'transitionInParams',
-                    'transitionOut', 'transitionOutParams']:
-            if key in kwargs:
-                self.attrs[key] = kwargs.get(key)
+    """
+    Provides the attributes for a Skeleton Svelte Accordion component.
 
-    # Property definitions remain the same
+    Ref: https://www.skeleton.dev/components/accordions (Adjust URL if needed)
+
+    Note:
+        - Content (children) is added by nesting AccordionItem components within this component.
+        - Icons (iconOpen, iconClosed) are typically handled within AccordionItem, not set globally here.
+        - Event callbacks (onValueChange, onFocusChange) are handled via the component's event system (e.g., using `.on('valueChange', handler)`).
+        - Use `value` for controlled state or `defaultValue` for uncontrolled initial state.
+    """
+    def __init__(self, **kwargs):
+        self.domDict['vue_type'] = "skeleton_component"
+        self.domDict['html_tag'] = "accordion"
+        # Ensure attrs dictionary exists if not already initialized
+
+        # List of valid Accordion props to be passed directly as attributes
+        # Excludes slots (children, iconOpen, iconClosed) and events (onValueChange, etc.)
+        valid_accordion_keys = [
+            'animationConfig',  # dict: The animation configuration
+            'base',             # str: Sets base styles
+            'padding',          # str: Set padding styles
+            'spaceY',           # str: Set vertical spacing styles
+            'rounded',          # str: Set border radius styles
+            'width',            # str: Set the width styles
+            'classes',          # str: Provide arbitrary CSS classes
+            'ids',              # dict: Ids of elements, useful for composition
+            'multiple',         # bool: Allow multiple items open (default: False)
+            'collapsible',      # bool: Allow closing expanded items (default: False)
+            'value',            # str | list[str]: Controlled value (expanded items)
+            'defaultValue',     # str | list[str]: Initial value (uncontrolled)
+            'disabled',         # bool: Disable all items (default: False)
+            'dir',              # str: Text direction "ltr" | "rtl" (default: "ltr")
+            # 'getRootNode' - Advanced, usually not set via simple props
+        ]
+
+        for key in valid_accordion_keys:
+            if key in kwargs:
+                # Copy the value from kwargs to the component's attributes
+                self.attrs[key] = kwargs[key]
+
+
+
+        
 
 
 Accordion = gen_Div_type(
@@ -28,37 +61,77 @@ Accordion = gen_Div_type(
     
 
 class AccordionItemMixin:
+    valid_accordion_item_keys = [
+            'headingLevel',     # number: The heading level for the control element.
+            'base',             # str: Sets base styles for the item's root element.
+            'spaceY',           # str: Set vertical spacing styles. (Less common on item vs parent?)
+            'classes',          # str: Provide arbitrary CSS classes to the item's root element.
+
+            # Control (Button/Header) Styling
+            'controlBase',      # str: Sets control's base styles.
+            'controlHover',     # str: Sets control's the hover styles.
+            'controlPadding',   # str: Sets control's the padding styles.
+            'controlRounded',   # str: Sets control's the border radius styles.
+            'controlClasses',   # str: Provide arbitrary CSS classes to the control.
+
+            # Lead (Icon/Element before control text) Styling
+            'leadBase',         # str: Sets the lead's base styles.
+            'leadClasses',      # str: Provide arbitrary CSS classes to the lead.
+
+            # Content/Panel Styling (Note: API description typo likely means 'content' not 'lead')
+            'contentBase',      # str: Sets the content/panel's base styles.
+            'contentClasses',   # str: Provide arbitrary CSS classes to the content/panel.
+
+            # Indicator (Icon/Caret) Styling (Note: API description typo likely means 'indicator' not 'lead')
+            'indicatorBase',    # str: Sets the indicator's base styles.
+            'indicatorClasses', # str: Provide arbitrary CSS classes to the indicator.
+
+            # Panel (Collapsible Content Area) Styling
+            'panelBase',        # str: Set the panel's base styles.
+            'panelPadding',     # str: Set the panel's padding styles.
+            'panelRounded',     # str: Set the panel's border-radius styles.
+            'panelClasses',     # str: Provide arbitrary CSS classes to the panel.
+
+            # Core Properties
+            'value',            # str: *Required* The unique value of the accordion item.
+            'disabled',         # bool: Whether the accordion item is disabled.
+        ]
+
     def __init__(self, **kwargs):
         self.domDict.vue_type= "skeleton_component"
         self.domDict.html_tag = "accordionitem"
-        for key in ['open', 'id', 'transitionIn', 'transitionInParams',
-                    'transitionOut', 'transitionOutParams']:
+        assert 'value' in kwargs
+
+        for key in AccordionItemMixin.valid_accordion_item_keys:
             if key in kwargs:
+                # Copy the value from kwargs to the component's attributes
                 self.attrs[key] = kwargs[key]
+                
+
 
     def set_slot_lead(self, *args):
         self.domDict.slot_lead_json = [_.convert_object_to_jsondict() for _ in args]
         
         pass
 
-    def set_slot_summary(self, *args):
-        self.domDict.slot_summary_json = [_.convert_object_to_jsondict() for _ in args]
+    def set_slot_control(self, *args):
+        self.domDict.slot_control_json = [_.convert_object_to_jsondict() for _ in args]
         
         pass
 
     def set_slot_content(self, *args):
-        self.domDict.slot_content_json = [_.convert_object_to_jsondict() for _ in args]
+        self.domDict.slot_panel_json = [_.convert_object_to_jsondict() for _ in args]
         
         pass
-    def set_slot_iconClosed(self, *args):
-        self.domDict.slot_iconClosed_json = [_.convert_object_to_jsondict() for _ in args]
+    # def set_slot_iconClosed(self, *args):
+    #     self.domDict.slot_iconClosed_json = [_.convert_object_to_jsondict() for _ in args]
         
-        pass
+    #     pass
 
-    def set_slot_iconOpen(self, *args):
-        self.domDict.slot_iconOpen_json = [_.convert_object_to_jsondict() for _ in args]
+    # def set_slot_iconOpen(self, *args):
+    #     self.domDict.slot_iconOpen_json = [_.convert_object_to_jsondict() for _ in args]
         
-        pass    
+    #     pass    
 AccordionItem = gen_Div_type(
         HCType.passive,
         "AccordionItem",
@@ -86,55 +159,105 @@ AccordionItem = gen_Div_type(
 #         stytags_getter_func=lambda m=ui_styles: m.sty.accordionitem,
 #         )                
 
-class TabGroupMixin:
+class TabsMixin:
     def __init__(self, **kwargs):
         self.domDict.vue_type= "skeleton_component"
-        self.domDict.html_tag = "tabgroup"
-        self.attrs['justify'] = kwargs.get('justify', "justify-start")
-        self.attrs['border'] = kwargs.get('border', "border-b border-surface-400-500-token")
-        print("in tabgroup", kwargs)
-        self.attrs['active'] = kwargs.get('active', "border-b-2 border-surface-900-50-token")
-        self.attrs['hover'] = kwargs.get('hover', "hover:variant-soft")
-        self.attrs['flex'] = kwargs.get('flex', "flex-none")
-        self.attrs['padding'] = kwargs.get('padding', "px-4 py-2")
-        self.attrs['rounded'] = kwargs.get('rounded', "rounded-tl-container-token rounded-tr-container-token")
-        self.attrs['spacing'] = kwargs.get('spacing', "space-y-1")
-        self.attrs['regionList'] = kwargs.get('regionList', "")
-        self.attrs['regionPanel'] = kwargs.get('regionPanel', "")
-        self.attrs['labelledby'] = kwargs.get('labelledby', "")
-        self.attrs['panel'] = kwargs.get('panel', "")
+        self.domDict.html_tag = "tabs"
+
+        self.domDict.slot_list_json = []
         self.domDict.slot_panel_json = []
+        for key in  ["fluid",
+                     "base",
+                     "classes",
+                     "listBase",
+                     "listJustify",
+                     "listBorder",
+                     "listMargin",
+                     "listGap",
+                     "listClasses",
+                     "contentBase",
+                     "contentClasses",
+                     "ids",
+                    "value",
+                    "defaultValue",
+                    "dir",
+                    "loopFocus",
+                    "translations",
+                    "composite",
+                    "activationMode",
+                    "deselectable"
+                     ]:
+            if key in kwargs:
+                self.attrs[key] = kwargs.get(key)
+
+            
+    def set_slot_list(self, *args):
+        self.domDict.slot_list_json = [_.convert_object_to_jsondict() for _ in args]
         
-    def set_slot_panel(self, *args):
-        self.domDict.slot_panel_json = [_.convert_object_to_jsondict() for _ in args]
+        pass
+    
+    def set_slot_content(self, *args):
+        self.domDict.slot_content_json = [_.convert_object_to_jsondict() for _ in args]
         
         pass
 
-TabGroup = gen_Div_type(
+     
+Tabs  = gen_Div_type(
         HCType.passive,
-        "TabGroup",
-        TabGroupMixin,
-        stytags_getter_func=lambda m=ui_styles: m.sty.tabgroup,
-        )                
+        "Tabs",
+        TabsMixin,
+        stytags_getter_func=lambda m=ui_styles: m.sty.skui_tabs,
+        )
 
-class TabMixin:
+
+
+class TabsControlMixin:
     def __init__(self, **kwargs):
         self.domDict.vue_type= "skeleton_component"
-        self.domDict.html_tag = "tab"
-        for key in ['group', 'name', 'value', 'title', 'controls', 'regionTab']:
+        self.domDict.html_tag = "tabscontrol"
+        for key in ["base",
+                    "padding",
+                    "translateX",
+                    "classes",
+                    "labelBase",
+                    "labelClasses",
+                    "stateInactive",
+                    "stateActive",
+                    "stateLabelInactive",
+                    "stateLabelActive",
+                    "value",
+                    "disabled"
+                    ]:
             if key in kwargs:
                 self.attrs[key] = kwargs.get(key)
-        self.domDict.tab_value = kwargs.get('tab_value')
-        
 
-Tab = gen_Div_type(
-        HCType.active,
-        "Tab",
-        TabMixin,
-        stytags_getter_func=lambda m=ui_styles: m.sty.tab,
-    static_addon_mixins = [TR.HCTextMixin]  
-        )                               
-Tab = assign_id(Tab)
+TabsControl  = gen_Div_type(
+        HCType.passive,
+        "TabsControl",
+        TabsControlMixin,
+        stytags_getter_func=lambda m=ui_styles: m.sty.skui_tabscontrol,
+        static_addon_mixins = [TR.HCTextMixin]  
+        )
+
+
+class TabsPanelMixin:
+    def __init__(self, **kwargs):
+        self.domDict.vue_type= "skeleton_component"
+        self.domDict.html_tag = "tabspanel"
+        for key in ["base", "classes", "value"
+                    ]:
+            if key in kwargs:
+                self.attrs[key] = kwargs.get(key)
+
+TabsPanel  = gen_Div_type(
+        HCType.passive,
+        "TabsPanel",
+        TabsPanelMixin,
+        stytags_getter_func=lambda m=ui_styles: m.sty.skui_tabspanel,
+        static_addon_mixins = [TR.HCTextMixin]  
+        )
+
+
 
 class SlideToggleMixin:
     def __init__(self, **kwargs):

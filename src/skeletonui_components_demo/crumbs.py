@@ -20,8 +20,9 @@ with writer_ctx:
                 pass
             
                 
-html_separator_frame = oj.PD.Subsubsection("With html separator",
-                    breadcrumb_bar_box)
+html_separator_frame = oj.PD.Subsection("With html separator",
+                                        breadcrumb_bar_box,
+                                        section_depth=10)
 
 with writer_ctx:
     with Div(extra_classes="card text-token", classes="p-4  flex justify-center") as breadcrumb_bar_box:
@@ -49,8 +50,9 @@ with writer_ctx:
                                  ):
                 pass
             
-icon_separator_frame = oj.PD.Subsubsection("With Icon separator",
-                    breadcrumb_bar_box)
+icon_separator_frame = oj.PD.Subsection("With Icon separator",
+                                        breadcrumb_bar_box,
+                                        section_depth=10)
 
 crumbs_box = oj.HCCStatic.Div(key="Crumbsbox",
                      childs = [html_separator_frame,

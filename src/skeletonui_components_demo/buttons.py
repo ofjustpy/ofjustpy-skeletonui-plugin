@@ -53,34 +53,39 @@ def X(variant_type = "filled"):
         yield btn_bar
 
         
-variant_filled = oj.PD.Subsubsection("Variant Filled",
-                                           oj.PD.StackV(childs = [_ for _ in X()], twsty_tags=[space/y/4])
+variant_filled = oj.PD.Subsection("Variant Filled",
+                                  oj.PD.StackV(childs = [_ for _ in X()], twsty_tags=[space/y/4]),
+                                  section_depth=10
                                            )
 
-variant_ghost = oj.PD.Subsubsection("Variant Ghost",
-                                           oj.PD.StackV(childs = [_ for _ in X("ghost")
+variant_ghost = oj.PD.Subsection("Variant Ghost",
+                                 oj.PD.StackV(childs = [_ for _ in X("ghost")
+                                                        ],
+                                              twsty_tags=[space/y/4]),
+                                 section_depth=10
+                                 )
+
+
+variant_soft = oj.PD.Subsection("Variant Soft",
+                                   oj.PD.StackV(childs = [_ for _ in X("soft")
+                                                          ],
+                                                twsty_tags=[space/y/4]),
+                                section_depth=10
+                                           )
+
+
+variant_ringed = oj.PD.Subsection("Variant Ringed",
+                                     oj.PD.StackV(childs = [_ for _ in X("ringed")
                                                                   ],
-                                                        twsty_tags=[space/y/4])
+                                                        twsty_tags=[space/y/4]),
+                                  section_depth=10
                                            )
 
-
-variant_soft = oj.PD.Subsubsection("Variant Soft",
-                                           oj.PD.StackV(childs = [_ for _ in X("soft")
-                                                                  ],
-                                                        twsty_tags=[space/y/4])
-                                           )
-
-
-variant_ringed = oj.PD.Subsubsection("Variant Ringed",
-                                           oj.PD.StackV(childs = [_ for _ in X("ringed")
-                                                                  ],
-                                                        twsty_tags=[space/y/4])
-                                           )
-
-variant_glass = oj.PD.Subsubsection("Variant Glass",
+variant_glass = oj.PD.Subsection("Variant Glass",
                                     oj.PD.StackV(childs = [_ for _ in X("glass")
                                                                   ],
-                                                 twsty_tags=[space/y/4])
+                                                 twsty_tags=[space/y/4]),
+                                 section_depth=10
                                     )
 
 tabgroup = TabGroup(childs=[Tab(key="Filled", text="Filled", tab_value=0),

@@ -8,10 +8,11 @@ achip = oj.Mutable.Span(key="achip",
                         extra_classes="chip variant-filled-primary",
                         text="chip"
                         )
-achip_box = oj.HCCMutable.Subsubsection("Chips",
+achip_box = oj.HCCMutable.Subsection("Chips",
                                         oj.Halign(achip,
                                                   content_type="mutable"
-                                                  )
+                                                  ),
+                                     section_depth=10
                                         )
 
 async def on_chip_click(dbref, msg, to_ms):
@@ -42,10 +43,11 @@ with writer_ctx:
                 pass    
                                  
 
-action_chips_box = oj.HCCMutable.Subsubsection("Action Chips",
+action_chips_box = oj.HCCMutable.Subsection("Action Chips",
                                                oj.Halign(action_chips,
                                                          content_type="mutable"
-                                                         )
+                                                         ),
+                                            section_depth=10
                                                
                                                )
 
