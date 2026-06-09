@@ -4,7 +4,8 @@ from ofjustpy import ui_styles
 from ofjustpy_engine import HC_Div_type_mixins as TR
 from ofjustpy.htmlcomponents_impl import assign_id
 from ofjustpy.icons import FontAwesomeIcon
-
+from py_tailwind_utils import btn, noop, ptypo, title, subtitle
+import ofjustpy as oj
 class AccordionMixin:
     """
     Provides the attributes for a Skeleton Svelte Accordion component.
@@ -512,3 +513,30 @@ Step = gen_Div_type(HCType.passive,
                        StepMixin,
                        stytags_getter_func=lambda m=ui_styles: m.sty.skeletonui_step
                        )
+def Button(**kwargs):
+    twsty_tags = kwargs.pop("twsty_tags", [])
+    print("twsty_tags = ", twsty_tags)
+    return oj.AD.Button(**kwargs, twsty_tags=[noop/btn, *twsty_tags])
+
+
+def Title(title_text, twsty_tags=[], align="center", **kwargs):
+    return oj.PD.Halign(
+        oj.PD.Span(
+            text=title_text,
+            twsty_tags= [ptypo/title, *twsty_tags], #TBD: conc_twtags(ptypo/title, *twsty_tags),
+            **kwargs,
+        ),
+        align=align,
+    )
+    
+
+def SubTitle(title_text, twsty_tags=[], align="center", **kwargs):
+    return oj.PD.Halign(
+        oj.PD.Span(
+            text=title_text,
+            twsty_tags= [ptypo/subtitle, *twsty_tags], #TBD: conc_twtags(ptypo/title, *twsty_tags),
+            **kwargs,
+        ),
+        align=align,
+    )
+    
