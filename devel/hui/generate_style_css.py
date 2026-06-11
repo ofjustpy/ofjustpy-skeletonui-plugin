@@ -1,11 +1,7 @@
 from twtags_safelist import get_twtags_safelist
 from svelte_bundler import build_ssr_style_css
 target_module = "runner"
-#target_module = "td_svg_components"
-#target_module = "td_buttons_vs_tw"
-#target_module = "td_buttons"
-#target_module = "kavya_theme_selector_via_pure_javascript"
-
+#target_module = "td_debug"
 themes = [
     "catppuccin",
     "cerberus",
@@ -31,8 +27,8 @@ themes = [
     "wintry"
 ]
 
+
 build_ssr_style_css(target_module,
-                    output_dir="./static/ssr/",
                     enable_skui_theme_selector = True,
-                    additional_skui_themes = themes
-                    )
+                    additional_skui_themes = themes,
+                    output_dir="./static/ssr/")

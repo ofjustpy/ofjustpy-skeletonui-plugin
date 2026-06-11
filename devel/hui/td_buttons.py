@@ -1,28 +1,24 @@
-import macropy.activate
+import kavya as kv
+from py_tailwind_utils import *
 from skeletonui_components.hyperui import buttons
-import ofjustpy as oj
-from py_tailwind_utils import *
-import theme_bar_wrapper
+import theme_select_bar
 
-import ofjustpy as oj
-oj.set_style("un")
+kv.set_style("un")
+app = kv.load_app()
 
-from ofjustpy import icons
-from py_tailwind_utils import *
-from ofjustpy import icons
-
-app = oj.load_app()
-top_bar = theme_bar_wrapper.get_top_bar()
 
 hbtn = buttons.wideWithIcon(href="#", text="SkeletonUI")
 
-endpoint = oj.create_endpoint("buttons",
+endpoint = kv.create_endpoint("buttons",
                               childs = [
-                                  top_bar,
+                                  theme_select_bar.top_bar,
                                   hbtn
                                         ],
                               title="Buttons",
-                              skeleton_data_theme="modern"
+                              skeleton_data_theme="modern",
+                              rendering_type="MutableSSR",
+                              svelte_bundle_dir="ssr" 
+                              
                               )
-oj.add_jproute("/", endpoint)
+kv.add_route("/", endpoint)
 

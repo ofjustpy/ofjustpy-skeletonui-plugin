@@ -1,17 +1,14 @@
-import macropy.activate
+import kavya as kv
+from py_tailwind_utils import *
 from skeletonui_components.hyperui import sideMenu
-import ofjustpy as oj
-from py_tailwind_utils import *
+import theme_select_bar
+kv.set_style("un")
+app = kv.load_app()
 
 
-import ofjustpy as oj
-oj.set_style("un")
 
-from ofjustpy import icons
-from py_tailwind_utils import *
-from ofjustpy import icons
 
-app = oj.load_app()
+
 simple_sideMenu = sideMenu.Simple("Wiki Items")
 simple_sideMenu.add_flat_item("general", "General")
 simple_sideMenu.add_flat_item("more_things","More things")
@@ -20,7 +17,7 @@ teams.add_flat_item("banned_users", "Banned Users")
 teams.add_flat_item("calender", "Calender")
 
 
-textbox = oj.PC.Prose(text="""Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ullamcorper accumsan lacus, a condimentum orci auctor ut. Quisque et volutpat elit. Vestibulum id velit vel augue suscipit ultricies. Aenean ultricies, libero eu dignissim interdum, eros dui cursus neque, at feugiat dolor nulla nec arcu. Nam vehicula justo in tincidunt tincidunt. Vivamus accumsan urna ut fringilla commodo. Nulla facilisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse eu tincidunt orci.
+textbox = kv.PC.Prose(text="""Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ullamcorper accumsan lacus, a condimentum orci auctor ut. Quisque et volutpat elit. Vestibulum id velit vel augue suscipit ultricies. Aenean ultricies, libero eu dignissim interdum, eros dui cursus neque, at feugiat dolor nulla nec arcu. Nam vehicula justo in tincidunt tincidunt. Vivamus accumsan urna ut fringilla commodo. Nulla facilisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse eu tincidunt orci.
 Curabitur sed consequat dolor. Nullam eget urna nec nulla sodales posuere. Mauris id metus non ligula venenatis malesuada in id metus. Fusce eu urna ac justo consectetur venenatis vel sit amet libero. Sed euismod nisl vel mi ultrices, at cursus mauris volutpat. Quisque a libero felis. Curabitur laoreet, libero vel scelerisque suscipit, metus est bibendum arcu, id dapibus odio arcu nec libero. Integer convallis eget purus vel luctus. Nulla facilisi. Sed pharetra vel urna vel tempor. Integer et felis sed metus ullamcorper laoreet.
 
 Praesent vel consectetur justo, vel blandit arcu. Vivamus cursus, libero eu tincidunt aliquet, arcu metus commodo justo, eget ultricies ligula lectus vitae lacus. Proin gravida nec metus ut rhoncus. Ut sit amet erat sit amet mi tempor rhoncus eget at neque. Integer sit amet turpis id neque bibendum cursus. Fusce quis enim euismod, suscipit justo vel, commodo mauris. Sed convallis tellus sed risus finibus efficitur. Vivamus vel elit nec odio accumsan cursus eu vel tortor. Vivamus dapibus sem id sapien dignissim cursus.
@@ -33,13 +30,18 @@ Nam vel ullamcorper ligula. Ut suscipit bibendum turpis, vitae vestibulum mi sag
                       extra_classes="bg-gradient-to-br variant-gradient-primary-secondary"
                       )
 
-endpoint = oj.create_endpoint("sideMenu",
-                              childs = [oj.HCCMutable.Container(childs = [oj.PC.StackH(childs=[simple_sideMenu, textbox],
-                                                                                       twsty_tags=[space/x/4])
+endpoint = kv.create_endpoint("sideMenu", childs = [kv.HM.Container(childs = [kv.PD.StackH(childs=[theme_select_bar.top_bar,
+                                                                                                   simple_sideMenu,
+                                                                                                   textbox],
+                                                                                           twsty_tags=[space/x/4])
 
-                                                                          ])
-                                        ],
-                              title="Side Menu"
+                                                                              ])
+                                                    ],
+                              title="Side Menu",
+                              body_classes="font-geist",
+                              skeleton_data_theme="modern",
+                              rendering_type="MutableSSR",
+                              svelte_bundle_dir="ssr"
                               )
-oj.add_jproute("/", endpoint)
+kv.add_route("/", endpoint)
 

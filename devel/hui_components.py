@@ -1,9 +1,10 @@
-import ofjustpy as oj
-from html_writer.macro_module import macros, writer_ctx
+import kavya as kv
+from kavya.dsl import macros, MuCtx
+
 
 
 def Base(key, title, on_change):
-    with writer_ctx:
+    with MuCtx:
         with Div(extra_classes="variant-soft p-4") as comp_box:
             with Label(for_='HeadlineAct', extra_classes="variant-soft",
                        classes='block text-sm font-medium text-gray-900', text=title):
@@ -14,7 +15,7 @@ def Base(key, title, on_change):
                     pass
 
     def add_option(value, text, select_box=select_box):
-        with writer_ctx:
+        with MuCtx:
             with Option(value=value, text=text, extra_classes="variant-filled") as opt_item:
                     pass
 
@@ -25,7 +26,7 @@ def Base(key, title, on_change):
 
 
 def BaseGroup(key, title, on_change):
-    with writer_ctx:
+    with MuCtx:
         with Div(extra_classes="variant-soft p-4") as comp_box:
             with Label(for_=title, extra_classes="variant-soft", classes='block', text=title):
                 pass
@@ -37,12 +38,12 @@ def BaseGroup(key, title, on_change):
                     pass
 
     def add_optgroup(label, select_box=select_box):
-        with writer_ctx:
-            with Optgroup(label=label) as optgroup_box:
+        with MuCtx:
+            with PD.Optgroup(label=label) as optgroup_box:
                 pass
         
         def add_option(value, text, optgroup_box=optgroup_box):
-            with writer_ctx:
+            with MuCtx:
                 with Option(value=value, text=text) as opt_item:
                         pass
 

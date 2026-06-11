@@ -1,7 +1,10 @@
 import macropy.activate
-import ofjustpy as oj
+import kavya as kv
 
-app = oj.load_app()
+app = kv.load_app()
 
+#import td_alerts
+#import td_sideMenu
 #import td_buttons
-import td_buttons_via_dsl
+#import td_buttons_via_dsl
+import td_select_group

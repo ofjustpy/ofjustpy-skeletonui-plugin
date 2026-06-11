@@ -1,9 +1,10 @@
-import ofjustpy as oj
-from html_writer.macro_module import macros, writer_ctx
+import kavya as kv
+from kavya.dsl import macros, MuCtx
+
 
 # ========================= select component =========================
 def Base(key, title, on_change, **kwargs):
-    with writer_ctx:
+    with MuCtx:
         with Div(classes="w-full flex justify-center"):
             
             with Div(extra_classes="card m-4",
@@ -23,7 +24,7 @@ def Base(key, title, on_change, **kwargs):
                         pass
 
     def add_option(value, text, select_box=select_box):
-        with writer_ctx:
+        with MuCtx:
             with Option(value=value,
                         text=text,
                         extra_classes="card variant-filled-primary") as opt_item:
@@ -36,7 +37,7 @@ def Base(key, title, on_change, **kwargs):
 
 # ====================== select -- list by group =====================
 def BaseGroup(key, title, on_change, **kwargs):
-    with writer_ctx:
+    with MuCtx:
         with Div(extra_classes="card variant-soft-primary",
                  **kwargs) as comp_box:
             with Label(for_=title,
@@ -55,12 +56,12 @@ def BaseGroup(key, title, on_change, **kwargs):
                     pass
 
     def add_optgroup(label, select_box=select_box):
-        with writer_ctx:
-            with Optgroup(label=label, extra_classes="variant-soft-secondary") as optgroup_box:
+        with MuCtx:
+            with PD.Optgroup(label=label, extra_classes="variant-soft-secondary") as optgroup_box:
                 pass
         
         def add_option(value, text, optgroup_box=optgroup_box):
-            with writer_ctx:
+            with MuCtx:
                 with Option(value=value,
                             text=text,
                             extra_classes="variant-filled-primary"

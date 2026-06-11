@@ -1,39 +1,85 @@
-import ofjustpy as oj
+from pathlib import Path
+from addict import Dict
+import kavya as kv
 from py_tailwind_utils import *
-import macropy.activate
-from hui_components import Base, BaseGroup
+from hyperui_plugin import selects
 
-app = oj.load_app()
-oj.set_style("un")
 
-# ======================= top bar  select theme ======================
-async def on_theme_select(dbref, msg, to_ms):
-    await msg.page.run_javascript(f"""
-    console.log("start setting ");
-    const body = document.querySelector('body');
-    console.log(body);
-    body.setAttribute('data-theme', '{msg.value}');
-    console.log("Done setting ");
-    """)
-    pass
 
-select_theme_box  = Base("theme-selector", "Select Theme", on_change=on_theme_select)
-select_theme_box.add_option('skeleton', 'skeleton')
-select_theme_box.add_option('modern', 'modern')
-select_theme_box.add_option('wintry', 'wintry')
+app = kv.load_app()
+kv.set_style("un")
 
-select_theme_box.add_option('rocket', 'rocket')
-select_theme_box.add_option('seafoam', 'seafoam')
-select_theme_box.add_option('vintage', 'vintage')
-select_theme_box.add_option('sahara', 'sahara')
-select_theme_box.add_option('crimsom', 'crimson')
+
+# # ======================= top bar  select theme ======================
+# async def on_theme_select(dbref, msg, to_ms):
+#     await msg.page.run_javascript(f"""
+#     console.log("start setting ");
+#     const body = document.querySelector('body');
+#     console.log(body);
+#     body.setAttribute('data-theme', '{msg.value}');
+#     console.log("Done setting ");
+#     """)
+#     pass
+
+#TODO: hui_components does not belong here
+from hui_components import  BaseGroup
+# select_theme_box  = Base("theme-selector", "Select Theme", on_change=on_theme_select)
+# select_theme_box.add_option('skeleton', 'skeleton')
+# select_theme_box.add_option('modern', 'modern')
+# select_theme_box.add_option('wintry', 'wintry')
+
+# select_theme_box.add_option('rocket', 'rocket')
+# select_theme_box.add_option('seafoam', 'seafoam')
+# select_theme_box.add_option('vintage', 'vintage')
+# select_theme_box.add_option('sahara', 'sahara')
+# select_theme_box.add_option('crimsom', 'crimson')
+
+
+theme_selector_box = color_utility_class_selector_box = selects.Base("theme_selector", "Choose theme")
+
+themes = [
+    "catppuccin",
+    "cerberus",
+    "concord",
+    "crimson",
+    "fennec",
+    "hamlindigo",
+    "legacy",
+    "mint",
+    "modern",
+    "mona",
+    "nosh",
+    "nouveau",
+    "pine",
+    "reign",
+    "rocket",
+    "rose",
+    "sahara",
+    "seafoam",
+    "terminus",
+    "vintage",
+    "vox",
+    "wintry"
+]
+
+for  value in themes:
+    theme_selector_box.add_option(value=value, text=value)
+
+select_div = kv.get_comp_target("/theme_selector_select_box")
+select_div.htmlRender_attr.append("""onchange="set_skui_theme(this.value)"
+"""
+                            )
+select_div.prepare_htmlRender()
+
+
+
 
 
 on_change_variant_callback = None
-def on_change_variant_click(dbref, msg, to_ms):
-    print ("variant selector clicked:", msg.value)
+async def on_change_variant_click(dbref, msg, page, request):
+    print ("variant selector clicked:", msg)
     if on_change_variant_callback:
-        on_change_variant_callback(dbref, msg, to_ms)
+        await on_change_variant_callback(dbref, msg, page, request)
         
     pass
 
@@ -92,6 +138,8 @@ glass_group.add_option("variant-glass-surface", "surface")
 
 
 
-top_bar = oj.PD.Div(twsty_tags=[W/full, db.f,  flx.rrow, space/x/4],
-          childs=[select_theme_box, select_variant_box]
+top_bar = kv.PD.Div(twsty_tags=[W/full, db.f,  flxdir.rrow, space/x/4],
+          childs=[theme_selector_box,
+                  select_variant_box
+                  ]
     )

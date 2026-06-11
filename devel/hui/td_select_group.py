@@ -1,11 +1,10 @@
-import macropy.activate
-from skeletonui_components.hyperui import Base, BaseGroup
-import ofjustpy as oj
+import kavya as kv
 from py_tailwind_utils import *
+import theme_select_bar
 
-oj.set_style("un")
+from skeletonui_components.hyperui import Base, BaseGroup
 
-def on_select(*args, **kwargs):
+async def on_select(*args, **kwargs):
     pass
 
 basegroup_select = BaseGroup("basegroup",
@@ -31,16 +30,22 @@ optgroup.add_option("JH", "Jimi Hendrix")
 optgroup = basegroup_select.add_optgroup("S")
 optgroup.add_option("SRV", "Stevie Ray Vaughn")
 
-selectgroup_box = oj.PD.Valign(oj.PD.Halign(basegroup_select,
+selectgroup_box = kv.PD.Valign(kv.PD.Halign(basegroup_select,
                                        twsty_tags=[W/full])
                           )
-app = oj.load_app()
-wp_endpoint = oj.create_endpoint(key="SKUI_HUI_Select",
-                                 childs = [ selectgroup_box
+app = kv.load_app()
+wp_endpoint = kv.create_endpoint(key="SKUI_HUI_Select",
+                                 childs = [
+                                     theme_select_bar.top_bar,
+                                     selectgroup_box
                                      
                                            ],
                                  
-                                 title="SelectBox Demo"
+                                 title="SelectBox Demo",
+                                 body_classes="font-geist",
+                                 skeleton_data_theme="modern",
+                                 rendering_type="MutableSSR",
+                                 svelte_bundle_dir="ssr" 
                                  )
-oj.add_jproute("/", wp_endpoint)
+kv.add_route("/", wp_endpoint)
                 

@@ -1,9 +1,9 @@
-import ofjustpy as oj
+import kavya as kv
 from py_tailwind_utils import *
 import skeletonui_components as skui
 
-app = oj.load_app()
-oj.set_style("un")
+app = kv.load_app()
+kv.set_style("un")
 
 # ======================= top bar  select theme ======================
 # async def on_theme_select(dbref, msg, to_ms):
@@ -158,16 +158,19 @@ oj.set_style("un")
 
 # oj.add_jproute("/", wp_endpoint)
 
-sk_btn = skui.Button(key="sk_btn", twsty_tags=[ptonal/success], text="Click me")
+sk_btn = skui.AC.Button(key="sk_btn",
+                     twsty_tags=[ptonal/success],
+                     text="Click me")
 sk_title = skui.Title("Skeleton UI")
-wp_endpoint = oj.create_endpoint(key="sk_buttons",
+wp_endpoint = kv.create_endpoint(key="sk_buttons",
                                  childs = [ sk_title,
                                             sk_btn
                                            ],
                                  
                                  title="Skeleton Buttons",
                                  skeleton_data_theme="seafoam",
-                                 csr_bundle_dir="svelte_bundle",
+                                 rendering_type="SSR",
+                                 svelte_bundle_dir="ssr",
                                  )
 
-oj.add_jproute("/", wp_endpoint)
+kv.add_route("/", wp_endpoint)
