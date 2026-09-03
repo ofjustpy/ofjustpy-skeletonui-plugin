@@ -23,8 +23,8 @@ wp_endpoint = kv.create_endpoint(key="alerts",
                                  
                                  body_classes="font-geist",
                                  skeleton_data_theme="modern",
-                                 rendering_type="MutableSSR",
-                                 svelte_bundle_dir="ssr" 
+                                 rendering_type="CSR",
+                                 svelte_bundle_dir="csr" 
                                  )
 
 

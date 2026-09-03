@@ -1,13 +1,33 @@
-import sys
-#from svelte_bundler import list_jsvars_in_module
-from svelte_bundler import build_bundle
-target_module = "runner"
-dep_modules = [
-    "td_buttons",
-    ]
+from svelte_bundler.csr import  build_csr_svelte_bundle
 
+build_csr_svelte_bundle("runner",
 
-build_bundle(target_module,
-             dep_modules,
-             output_dir="static/svelte_bundle")
+                        enable_skui_theme_selector = True,
+                        additional_skui_themes = [
+    "catppuccin",
+    "cerberus",
+    "concord",
+    "crimson",
+    "fennec",
+    "hamlindigo",
+    "legacy",
+    "mint",
+    "modern",
+    "mona",
+    "nosh",
+    "nouveau",
+    "pine",
+    "reign",
+    "rocket",
+    "rose",
+    "sahara",
+    "seafoam",
+    "terminus",
+    "vintage",
+    "vox",
+    "wintry"
+]
+
+                        )
+
 

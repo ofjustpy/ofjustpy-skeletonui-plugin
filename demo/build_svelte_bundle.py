@@ -1,5 +1,3 @@
-
-
 import os
 from twtags_safelist import (get_csr_components, 
                              get_twtags_safelist
@@ -21,12 +19,10 @@ logging.basicConfig(filename="app.log", level=logging.ERROR, format=FORMAT)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
 
-target_module = "runner"
+#target_module = "td_render_styeditor"
+target_module = "demo_forms_and_input"
 build_csr_svelte_bundle(target_module,
-                        deploy_websocket_manager=True,
                         enable_skui_theme_selector=True,
-                        additional_skui_themes =["seafoam", "mint", "sahara"],
+                        deploy_websocket_manager=True,
                         enable_inbrowser_exec=False)
-
-
 

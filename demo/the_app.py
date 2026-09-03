@@ -1,5 +1,5 @@
 from starlette.requests import Request
-import ofjustpy as oj
+import kavya as kv
 from starlette.middleware import Middleware
 class InitRequestStateMiddleware:
     def __init__(self, app):
@@ -14,5 +14,5 @@ class InitRequestStateMiddleware:
         await self.app(scope, receive, send)
 
             
-app  = oj.build_app(middlewares=[Middleware(InitRequestStateMiddleware)
+app  = kv.build_app(middlewares=[Middleware(InitRequestStateMiddleware)
                                  ])
